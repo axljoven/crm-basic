@@ -67,7 +67,8 @@ async function getData(): Promise<{ leads: Contact[]; stats: Stats }> {
   stats.total = leads.length
 
   for (const lead of leads) {
-    if (lead.status in stats) (stats as Record<string, number>)[lead.status]++
+    const s = lead.status as keyof Stats
+    if (s in stats && typeof stats[s] === 'number') (stats[s] as number)++
     stats.by_type[lead.type] = (stats.by_type[lead.type] ?? 0) + 1
     const budget = lead.people?.attributes?.budget_range
     if (budget) stats.by_budget[budget] = (stats.by_budget[budget] ?? 0) + 1
@@ -145,7 +146,7 @@ export default async function AdminPage() {
             <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-gray-400 mb-5">Pipeline</div>
             <div className="space-y-3">
               {pipeline.map(({ key, label, color }) => {
-                const count = (stats as Record<string, number>)[key] ?? 0
+                const count = (stats as unknown as Record<string, number>)[key] ?? 0
                 const pct = stats.total > 0 ? (count / stats.total) * 100 : 0
                 return (
                   <div key={key}>
