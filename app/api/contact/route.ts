@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase } from '@/lib/supabase'
+import { Resend } from 'resend'
+
+const TYPE_LABELS: Record<string, string> = {
+  landing_page_quote: 'Single-page landing site',
+  custom_ui_dev: 'Custom UI + frontend development',
+  site_upload: 'Site uploading / deployment',
+  multipage_website_quote: 'Multi-page business site',
+  package_inquiry: 'Package / options inquiry',
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -53,6 +62,30 @@ export async function POST(req: NextRequest) {
     if (contactError) {
       console.error('Contact insert error:', contactError)
       return NextResponse.json({ error: 'Failed to save inquiry' }, { status: 500 })
+    }
+
+    // Send confirmation email (non-blocking — don't fail the form if email fails)
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      resend.emails.send({
+        from: 'Axl Joven <onboarding@resend.dev>',
+        to: email,
+        subject: 'Got your inquiry — I\'ll be in touch soon',
+        html: `
+          <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;color:#000;">
+            <p>Hi ${name},</p>
+            <p>Thanks for reaching out. I received your inquiry about <strong>${TYPE_LABELS[inquiry_type] ?? inquiry_type}</strong> and I'll get back to you within a few hours.</p>
+            <p><strong>What you sent:</strong></p>
+            <blockquote style="border-left:3px solid #0070F3;margin:0;padding:12px 16px;background:#f9f9f9;color:#333;">
+              ${message}
+            </blockquote>
+            ${budget_range ? `<p style="color:#555;font-size:14px;">Budget: ${budget_range}</p>` : ''}
+            <p>Talk soon,<br/>Axl</p>
+            <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
+            <p style="font-size:12px;color:#aaa;">crm-axl.vercel.app</p>
+          </div>
+        `,
+      }).catch(err => console.error('Resend error:', err))
     }
 
     return NextResponse.json({ ok: true })
