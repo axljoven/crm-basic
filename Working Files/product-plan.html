@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Plan · CRM Basic</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background-color: #FFFFFF;
+      color: #000000;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 64px 32px 96px;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid #000000;
+      padding-bottom: 24px;
+      margin-bottom: 48px;
+    }
+
+    .header-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0070F3;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #000000;
+      line-height: 1.2;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 56px;
+    }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0070F3;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      color: #111111;
+      margin-bottom: 16px;
+    }
+
+    /* Key-value summary */
+    .kv-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      border: 1px solid #e5e5e5;
+    }
+
+    .kv-row {
+      display: contents;
+    }
+
+    .kv-key {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #555555;
+      background: #f7f7f7;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .kv-val {
+      font-size: 14px;
+      color: #000000;
+      background: #FFFFFF;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .kv-row:last-child .kv-key,
+    .kv-row:last-child .kv-val {
+      border-bottom: none;
+    }
+
+    code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px;
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #0070F3;
+    }
+
+    /* Build blocks */
+    .build-block {
+      border: 1px solid #000000;
+      margin-bottom: 40px;
+    }
+
+    .build-block-header {
+      background: #000000;
+      color: #FFFFFF;
+      padding: 16px 24px;
+    }
+
+    .build-block-header .block-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0070F3;
+      margin-bottom: 4px;
+    }
+
+    .build-block-header h3 {
+      color: #FFFFFF;
+      margin-bottom: 0;
+      font-size: 20px;
+    }
+
+    .build-block-body {
+      padding: 24px;
+    }
+
+    .goal-box {
+      background: #f7f7f7;
+      border-left: 3px solid #0070F3;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .goal-box .goal-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0070F3;
+      margin-bottom: 6px;
+    }
+
+    .goal-box p {
+      margin-bottom: 0;
+      font-size: 15px;
+      color: #000000;
+    }
+
+    .subsection-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #000000;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    /* Checklists */
+    ul.checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul.checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+      color: #111111;
+      line-height: 1.5;
+    }
+
+    ul.checklist li:last-child {
+      border-bottom: none;
+    }
+
+    ul.checklist li::before {
+      content: '';
+      display: block;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      border: 1.5px solid #aaaaaa;
+      border-radius: 3px;
+      background: #FFFFFF;
+    }
+
+    /* Brief box */
+    .brief-box {
+      background: #f7f7f7;
+      border: 1px solid #e5e5e5;
+      padding: 24px;
+      font-size: 14px;
+      color: #111111;
+      line-height: 1.7;
+    }
+
+    .brief-box p {
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .brief-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .not-building {
+      background: #fff8f0;
+      border-left: 3px solid #000000;
+      padding: 14px 20px;
+      font-size: 14px;
+      color: #333333;
+      margin-top: 16px;
+    }
+
+    .enum-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      background: #000000;
+      color: #FFFFFF;
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+
+    .scope-text {
+      font-size: 14px;
+      color: #333333;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-label">Product Plan</div>
+      <h1>CRM Basic</h1>
+    </div>
+
+    <!-- What we're building -->
+    <section>
+      <h2>What we're actually building and why</h2>
+      <p>
+        <strong>In one sentence:</strong> A CRM that catches every frontend dev inquiry the moment it lands so Axl can follow up on all of them — not just the ones he happened to remember.
+      </p>
+      <p>
+        <strong>Who it's for:</strong> Axl as the operator managing his frontend dev pipeline, and the potential clients who reach out asking about landing pages, custom UI, site uploads, multi-page sites, or package details.
+      </p>
+      <div class="not-building">
+        <strong>What we are deliberately NOT building:</strong> no affiliates, no subscriptions, no cohorts, no analytics dashboards, no integrations beyond what's named here. If it isn't load-bearing for capturing and working a lead, it's out.
+      </div>
+    </section>
+
+    <!-- Interview answers -->
+    <section>
+      <h2>Interview Answers</h2>
+      <div class="kv-grid">
+        <div class="kv-row">
+          <div class="kv-key">Business</div>
+          <div class="kv-val">CRM Basic</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">What I sell</div>
+          <div class="kv-val">Frontend dev services</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">The gap today</div>
+          <div class="kv-val">People email me and I forget to follow up</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">90-day win</div>
+          <div class="kv-val">Never miss a follow-up; have a way to review all leads anytime</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Weekly inquiry volume</div>
+          <div class="kv-val">5–10 per week</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Inquiry types</div>
+          <div class="kv-val">
+            <div class="enum-tags">
+              <span class="tag">landing_page_quote</span>
+              <span class="tag">custom_ui_dev</span>
+              <span class="tag">site_upload</span>
+              <span class="tag">multipage_website_quote</span>
+              <span class="tag">package_inquiry</span>
+            </div>
+          </div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Design system</div>
+          <div class="kv-val">Academic — serious, structured, editorial, trustworthy</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Brand colors</div>
+          <div class="kv-val"><code>#000000</code> primary · <code>#FFFFFF</code> background · <code>#0070F3</code> accent</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Custom attributes</div>
+          <div class="kv-val">
+            <code>how_we_met</code> (text note)<br/>
+            <code>budget_range</code> (Under $500 / $500–$2,000 / $2,000–$5,000 / $5,000–$10,000 / $10,000+)<br/>
+            <code>follow_up_date</code> (date)
+          </div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Domain</div>
+          <div class="kv-val"><code>crm-axl.vercel.app</code> (Vercel-assigned; project name: crm-axl)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical brief -->
+    <section>
+      <h2>The Brief</h2>
+      <div class="brief-box">
+        <p>Next.js (App Router) + Supabase + Vercel. Two surfaces: a public marketing site that captures leads, and an <code>/admin</code> CRM. The <code>/admin</code> section is open and unprotected at first; it gets locked down with email-and-password Supabase Auth later in the build. No auth, login page, or route protection until explicitly asked.</p>
+        <p><strong>People</strong> — one row per person, deduplicated by email. Columns: id, email (unique), name, phone, company, role, source_site, ok_to_contact, attributes (jsonb), created_at, updated_at.</p>
+        <p><strong>Contacts</strong> — inquiry pipeline. Stages: new_lead → contacted → discovery_call → proposal → won / lost. Columns: id, person_id, type, subject, message, source, status, metadata (jsonb), created_at. Type constrained to the five inquiry types above.</p>
+        <p><strong>activity_log</strong> — every status change on a Contacts row writes one row here. Columns: id, contact_id, person_id, from_status, to_status, actor, note, created_at.</p>
+        <p><strong>Orders</strong> — what people bought. Columns: id, person_id, product_name, amount_cents, currency, status (pending / paid / refunded / cancelled), created_at.</p>
+        <p><strong>Newsletter</strong> — tracked by people.ok_to_contact = true. No separate table.</p>
+        <p>Conventions: upsert people by email; never duplicate. Access Supabase server-side with the service key; keys in environment variables only. Work one step at a time and wait for approval before each step.</p>
+      </div>
+    </section>
+
+    <!-- Build 1 -->
+    <section>
+      <h2>Build Blocks</h2>
+
+      <div class="build-block">
+        <div class="build-block-header">
+          <div class="block-label">Build 1</div>
+          <h3>Prove the loop</h3>
+        </div>
+        <div class="build-block-body">
+
+          <div class="goal-box">
+            <div class="goal-label">Goal</div>
+            <p>A stranger can submit an inquiry on the live site and Axl can see that lead inside /admin, on the same day, without anyone touching the database by hand. This closes the exact gap Axl named: emails coming in and getting forgotten because nothing is tracking them.</p>
+          </div>
+
+          <p class="scope-text"><strong>Scope:</strong> People and Contacts tables with custom attributes wired into jsonb; a working contact form on the live marketing site that writes a People row (upserted by email) and a linked Contacts row; one admin login with a single verified account; one admin page listing incoming leads newest first.</p>
+
+          <div class="subsection-title">Definition of Done</div>
+          <ul class="checklist">
+            <li>The contact form is live on crm-axl.vercel.app, not localhost.</li>
+            <li>Submitting it creates exactly one People row and one linked Contacts row, deduplicated by email on repeat submits.</li>
+            <li>how_we_met, budget_range, and follow_up_date are saved correctly inside attributes.</li>
+            <li>A new Contacts row lands in status new_lead.</li>
+            <li>Axl can log in to /admin with his one seeded account.</li>
+            <li>The admin leads page shows the submission within seconds, newest first.</li>
+            <li>Axl personally runs the full flow once: submit as a visitor, log in, see it.</li>
+          </ul>
+
+          <div class="subsection-title">Success Criteria</div>
+          <ul class="checklist">
+            <li>From a cold start, submit to visible in under 60 seconds.</li>
+            <li>Two submissions from the same email produce one person, not two.</li>
+            <li>Axl can read the lead's name, inquiry type, message, and all three custom attributes on the admin page without opening Supabase.</li>
+            <li>No lead can land and go unseen — the failure mode Axl named is structurally impossible.</li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- Build 2 -->
+      <div class="build-block">
+        <div class="build-block-header">
+          <div class="block-label">Build 2</div>
+          <h3>Make it the system I run the business from</h3>
+        </div>
+        <div class="build-block-body">
+
+          <div class="goal-box">
+            <div class="goal-label">Goal</div>
+            <p>Turn the proven loop into the place Axl actually manages relationships and money. After this, he works leads, records what clients bought, and keeps his newsletter list entirely from /admin behind his login — and every new inquiry gets an automatic confirmation email. This is what makes the ninety-day win real: zero missed follow-ups at 5–10 inquiries a week, with a full pipeline he can review anytime.</p>
+          </div>
+
+          <p class="scope-text"><strong>Scope:</strong> the rest of the /admin back end behind Axl's login: full People directory, all inquiries with working pipeline stages, Orders list, and Newsletter list (ok_to_contact = true). Plus Resend wired so a confirmation email fires on form submit. Every Contacts status change writes an activity_log row.</p>
+
+          <div class="subsection-title">Definition of Done</div>
+          <ul class="checklist">
+            <li>All four parts (People, Contacts, Orders, Newsletter) are visible and usable in /admin, and all of /admin sits behind Axl's login.</li>
+            <li>Axl can move a Contacts row through new_lead → contacted → discovery_call → proposal → won or lost from the interface.</li>
+            <li>Each status change writes one activity_log row with from_status, to_status, and actor.</li>
+            <li>The People directory is searchable and shows how_we_met, budget_range, and follow_up_date.</li>
+            <li>Axl can add an Orders row against a person and see it on their record.</li>
+            <li>The Newsletter list shows everyone with ok_to_contact = true.</li>
+            <li>Resend is connected, the sending domain is verified, and a real confirmation email arrives after a form submit.</li>
+          </ul>
+
+          <div class="subsection-title">Success Criteria</div>
+          <ul class="checklist">
+            <li>Axl can run a lead from first inquiry to won without leaving /admin or touching the database.</li>
+            <li>A person's full history (their inquiries, status changes, and orders) is visible in one place.</li>
+            <li>A test submission produces a confirmation email in the inbox, not spam, with a verified Resend sender domain.</li>
+            <li>Nothing in /admin is reachable without logging in.</li>
+            <li>At 5–10 inquiries a week, this keeps up without Axl dropping to the database by hand.</li>
+          </ul>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

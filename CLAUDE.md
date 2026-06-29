@@ -2,12 +2,12 @@
 
 ## Stack (filled by Block II install skill)
 - IL skill installed: [pending]
-- GitHub repo: [pending]
-- Vercel project: [pending]
-- Domain bought: [pending]
-- Supabase project: [pending]
-- Supabase URL: [pending]
-- Supabase service key: [pending]
+- GitHub repo: https://github.com/axljoven/crm-basic
+- Vercel project: crm-axl (https://crm-axl.vercel.app)
+- Domain bought: crm-axl.vercel.app (Vercel-assigned)
+- Supabase project: crm-basic
+- Supabase URL: https://bmhxytuczaceexuaqpte.supabase.co
+- Supabase service key: [stored in .env.local and Vercel env vars — never commit]
 - Resend account: [pending]
 - Prototype live: [pending]
 

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM Basic · Axl Joven Frontend Dev</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000000;
+      --white: #FFFFFF;
+      --blue: #0070F3;
+      --gray-50: #fafafa;
+      --gray-100: #f4f4f4;
+      --gray-200: #e8e8e8;
+      --gray-400: #aaaaaa;
+      --gray-600: #555555;
+      --gray-800: #222222;
+      --max: 880px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 32px;
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-600);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--black); }
+
+    .nav-cta {
+      background: var(--black);
+      color: var(--white) !important;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-cta:hover { background: var(--blue); color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      border-bottom: 1px solid var(--gray-200);
+      padding: 96px 32px 80px;
+    }
+
+    .hero-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--black);
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--gray-600);
+      max-width: 540px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--blue); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 4px;
+      border: 1px solid var(--gray-200);
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    .btn-secondary:hover { border-color: var(--black); }
+
+    /* ── SECTION WRAPPER ── */
+    .section {
+      padding: 80px 32px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .section-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--gray-600);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    /* ── SERVICES GRID ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--gray-200);
+      border: 1px solid var(--gray-200);
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 28px;
+    }
+
+    .service-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--black);
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--white);
+    }
+
+    .service-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    @media (max-width: 640px) {
+      .steps { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 32px; }
+    }
+
+    .step-num {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--gray-200);
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -0.04em;
+    }
+
+    .step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* ── PIPELINE PREVIEW ── */
+    .pipeline-preview {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      padding: 32px;
+    }
+
+    .pipeline-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+
+    .pipeline-stages {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .stage-chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      color: var(--gray-600);
+      background: var(--white);
+    }
+
+    .stage-chip.active {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    .stage-chip.blue {
+      background: var(--blue);
+      color: var(--white);
+      border-color: var(--blue);
+    }
+
+    .lead-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--gray-200);
+      border: 1px solid var(--gray-200);
+    }
+
+    .lead-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr 1fr;
+      gap: 16px;
+      align-items: center;
+      background: var(--white);
+      padding: 14px 20px;
+      font-size: 13px;
+    }
+
+    .lead-row.header {
+      background: var(--gray-50);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+    }
+
+    .lead-name { font-weight: 600; color: var(--black); }
+    .lead-type { color: var(--gray-600); }
+    .lead-date { color: var(--gray-400); }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .badge-new { background: #e8f4ff; color: var(--blue); }
+    .badge-contacted { background: #f0fdf0; color: #16a34a; }
+    .badge-proposal { background: #fef9e8; color: #ca8a04; }
+
+    /* ── CONTACT FORM ── */
+    #contact {
+      background: var(--gray-50);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-800);
+    }
+
+    .field label .req { color: var(--blue); margin-left: 2px; }
+
+    .field input,
+    .field select,
+    .field textarea {
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--black);
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      accent-color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .checkbox-row label {
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--gray-600);
+      cursor: pointer;
+    }
+
+    .form-submit {
+      margin-top: 8px;
+    }
+
+    .btn-submit {
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 4px;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-submit:hover { background: var(--blue); }
+
+    /* success state */
+    .form-success {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .form-success .check {
+      width: 48px;
+      height: 48px;
+      background: var(--black);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-success .check svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .form-success h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .form-success p {
+      font-size: 14px;
+      color: var(--gray-600);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 32px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--black);
+    }
+
+    .footer-logo span { color: var(--blue); }
+
+    footer p {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">CRM<span>Basic</span></a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#contact" class="nav-cta">Get in touch</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-label">Frontend Development</span>
+      <h1>Sites that look sharp and ship on time.</h1>
+      <p class="hero-sub">
+        I build landing pages, multi-page sites, and custom UI. Fill out the form and I'll reply the same day.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Send an inquiry</a>
+        <a href="#services" class="btn-secondary">See what I build</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="section-inner">
+      <div class="section-label">What I build</div>
+      <h2 class="section-title">Pick what you need.</h2>
+      <p class="section-body">Five types of work. You'll know what's included before we start.</p>
+
+      <div class="services-grid">
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="1"/></svg>
+          </div>
+          <h3>Single-Page Landing Site</h3>
+          <p>One page, one goal. Good for products, offers, and events. Loads fast.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 16 16"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/></svg>
+          </div>
+          <h3>Multi-Page Business Site</h3>
+          <p>Home, about, services, contact — same design on every page.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <h3>Custom UI + Frontend Dev</h3>
+          <p>Bring your designs and I'll build them. Or I start from a blank file — either way, the code ships.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 16 16"><path d="M3 8l3 3 7-7" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Site Uploading & Deployment</h3>
+          <p>Already have a site? I'll put it online — hosted, domain connected, done.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 16 16"><path d="M8 1l2 5h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5z"/></svg>
+          </div>
+          <h3>Package Inquiry</h3>
+          <p>Not sure which one you need? Tell me what you're building and I'll send a scope and price.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-label">Process</div>
+      <h2 class="section-title">How it works.</h2>
+      <p class="section-body">Three steps. No back-and-forth that drags on for weeks.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>You send an inquiry</h3>
+          <p>Fill out the form. What you need, your budget, your deadline. Two minutes.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>I follow up same day</h3>
+          <p>I see every submission. I'll reply with a scope and timeline — usually within a few hours.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>We build it</h3>
+          <p>When we agree on scope, I build it. You get a live site, no babysitting needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN PREVIEW -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Pipeline preview</div>
+      <h2 class="section-title">Every inquiry, tracked.</h2>
+      <p class="section-body">Every submission goes into a pipeline. Nothing gets lost.</p>
+
+      <div class="pipeline-preview">
+        <div class="pipeline-label">Inquiry pipeline</div>
+        <div class="pipeline-stages">
+          <div class="stage-chip active">New Lead</div>
+          <div class="stage-chip">Contacted</div>
+          <div class="stage-chip">Discovery Call</div>
+          <div class="stage-chip">Proposal</div>
+          <div class="stage-chip blue">Won</div>
+          <div class="stage-chip">Lost</div>
+        </div>
+
+        <div class="lead-rows">
+          <div class="lead-row header">
+            <span>Name</span>
+            <span>Inquiry Type</span>
+            <span>Status</span>
+            <span>Date</span>
+          </div>
+          <div class="lead-row">
+            <span class="lead-name">Maria Santos</span>
+            <span class="lead-type">Landing Page Quote</span>
+            <span><span class="badge badge-new">New Lead</span></span>
+            <span class="lead-date">Today, 9:14 AM</span>
+          </div>
+          <div class="lead-row">
+            <span class="lead-name">Jake Rivera</span>
+            <span class="lead-type">Custom UI + Dev</span>
+            <span><span class="badge badge-contacted">Contacted</span></span>
+            <span class="lead-date">Yesterday</span>
+          </div>
+          <div class="lead-row">
+            <span class="lead-name">Carla Reyes</span>
+            <span class="lead-type">Multi-Page Site</span>
+            <span><span class="badge badge-proposal">Proposal</span></span>
+            <span class="lead-date">Jun 25</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section class="section" id="contact">
+    <div class="section-inner">
+      <div class="section-label">Get in touch</div>
+      <h2 class="section-title">Send an inquiry.</h2>
+      <p class="section-body">Fill in the details below. I read every submission and reply the same day.</p>
+
+      <div id="form-wrap">
+        <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Full name <span class="req">*</span></label>
+              <input type="text" placeholder="Maria Santos" required />
+            </div>
+
+            <div class="field">
+              <label>Email address <span class="req">*</span></label>
+              <input type="email" placeholder="maria@example.com" required />
+            </div>
+
+            <div class="field">
+              <label>Phone number</label>
+              <input type="tel" placeholder="+63 912 345 6789" />
+            </div>
+
+            <div class="field">
+              <label>Company / Organization</label>
+              <input type="text" placeholder="Acme Corp" />
+            </div>
+
+            <div class="field form-full">
+              <label>What are you inquiring about? <span class="req">*</span></label>
+              <select required>
+                <option value="" disabled selected>Select an inquiry type</option>
+                <option value="landing_page_quote">Single-page landing site — how much does it cost?</option>
+                <option value="custom_ui_dev">Custom UI design + frontend development</option>
+                <option value="site_upload">Site uploading / deployment help</option>
+                <option value="multipage_website_quote">Multi-page business site — pricing and what's included</option>
+                <option value="package_inquiry">Not sure — I'd like to talk through options</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Budget range</label>
+              <select>
+                <option value="" disabled selected>Select a range</option>
+                <option>Under $500</option>
+                <option>$500 – $2,000</option>
+                <option>$2,000 – $5,000</option>
+                <option>$5,000 – $10,000</option>
+                <option>$10,000+</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>How did you hear about me?</label>
+              <input type="text" placeholder="Referral, LinkedIn, Google…" />
+            </div>
+
+            <div class="field form-full">
+              <label>Tell me about your project <span class="req">*</span></label>
+              <textarea placeholder="What are you building? What do you already have? When do you need it?" required></textarea>
+            </div>
+
+            <div class="field form-full">
+              <div class="checkbox-row">
+                <input type="checkbox" id="ok_to_contact" />
+                <label for="ok_to_contact">I'm okay with receiving occasional updates and follow-ups by email.</label>
+              </div>
+            </div>
+
+            <div class="form-submit form-full">
+              <button type="submit" class="btn-submit">Send inquiry &rarr;</button>
+            </div>
+
+          </div>
+        </form>
+
+        <div class="form-success" id="form-success">
+          <div class="check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Inquiry received.</h3>
+          <p>Got it. I'll reply to your email within a few hours.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">CRM<span>Basic</span></div>
+      <p>Frontend dev services · crm-axl.vercel.app</p>
+      <p>&copy; 2026 Axl Joven</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('contact-form');
+      const success = document.getElementById('form-success');
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
