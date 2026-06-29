@@ -64,9 +64,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to save inquiry' }, { status: 500 })
     }
 
-    // Send confirmation email (non-blocking — don't fail the form if email fails)
+    // Send emails (non-blocking — don't fail the form if email fails)
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
+
+      // Notify admin
       resend.emails.send({
         from: 'CRM Basic <onboarding@resend.dev>',
         to: process.env.ADMIN_EMAIL!,
@@ -92,7 +94,25 @@ export async function POST(req: NextRequest) {
             <p style="font-size:12px;color:#aaa;">crm-axl.vercel.app</p>
           </div>
         `,
-      }).catch(err => console.error('Resend error:', err))
+      }).catch(err => console.error('Resend admin notify error:', err))
+
+      // Confirm receipt to inquirer
+      resend.emails.send({
+        from: 'Axl Joven <onboarding@resend.dev>',
+        to: email,
+        replyTo: process.env.ADMIN_EMAIL,
+        subject: `Got your inquiry — ${TYPE_LABELS[inquiry_type] ?? inquiry_type}`,
+        html: `
+          <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;color:#000;line-height:1.6;">
+            <p>Hi ${name},</p>
+            <p>Thanks for reaching out. I received your inquiry about <strong>${TYPE_LABELS[inquiry_type] ?? inquiry_type}</strong> and will get back to you within 1–2 business days.</p>
+            <p>In the meantime, feel free to reply to this email if you have anything to add.</p>
+            <p>— Axl</p>
+            <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
+            <p style="font-size:12px;color:#aaa;">crm-axl.vercel.app</p>
+          </div>
+        `,
+      }).catch(err => console.error('Resend inquirer confirm error:', err))
     }
 
     return NextResponse.json({ ok: true })
