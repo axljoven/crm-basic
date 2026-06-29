@@ -40,6 +40,7 @@ type Stats = {
   by_type: Record<string, number>
   by_budget: Record<string, number>
   this_week: number
+  overdue: number
 }
 
 async function getData(): Promise<{ leads: Contact[]; stats: Stats }> {
@@ -59,6 +60,7 @@ async function getData(): Promise<{ leads: Contact[]; stats: Stats }> {
   const stats: Stats = emptyStats()
   stats.total = leads.length
 
+  const now = new Date()
   for (const lead of leads) {
     const s = lead.status as keyof Stats
     if (s in stats && typeof stats[s] === 'number') (stats[s] as number)++
@@ -66,19 +68,32 @@ async function getData(): Promise<{ leads: Contact[]; stats: Stats }> {
     const budget = lead.people?.attributes?.budget_range
     if (budget) stats.by_budget[budget] = (stats.by_budget[budget] ?? 0) + 1
     if (new Date(lead.created_at) >= weekAgo) stats.this_week++
+    if (lead.status === 'new_lead' && addBusinessDays(new Date(lead.created_at), 2) < now) stats.overdue++
   }
 
   return { leads, stats }
 }
 
 function emptyStats(): Stats {
-  return { total: 0, new_lead: 0, contacted: 0, discovery_call: 0, proposal: 0, won: 0, lost: 0, by_type: {}, by_budget: {}, this_week: 0 }
+  return { total: 0, new_lead: 0, contacted: 0, discovery_call: 0, proposal: 0, won: 0, lost: 0, by_type: {}, by_budget: {}, this_week: 0, overdue: 0 }
+}
+
+function addBusinessDays(date: Date, days: number): Date {
+  const result = new Date(date)
+  let added = 0
+  while (added < days) {
+    result.setDate(result.getDate() + 1)
+    const dow = result.getDay()
+    if (dow !== 0 && dow !== 6) added++
+  }
+  return result
 }
 
 export const revalidate = 0
 
 export default async function AdminPage() {
   const { leads, stats } = await getData()
+  const overdue = stats.overdue
   const maxType = Math.max(...Object.values(stats.by_type), 1)
   const maxBudget = Math.max(...Object.values(stats.by_budget), 1)
 
@@ -105,6 +120,11 @@ export default async function AdminPage() {
             <span className="text-[11px] font-semibold tracking-[0.1em] uppercase text-gray-400 border-l border-gray-200 pl-4">
               Dashboard
             </span>
+            {overdue > 0 && (
+              <span className="text-[11px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full leading-none">
+                {overdue} overdue
+              </span>
+            )}
           </div>
           <form action="/api/auth/logout" method="POST">
             <button type="submit" className="text-xs text-gray-400 hover:text-black transition-colors">
