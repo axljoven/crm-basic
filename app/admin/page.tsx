@@ -1,13 +1,5 @@
 import { getSupabase } from '@/lib/supabase'
-
-const STATUS_COLORS: Record<string, string> = {
-  new_lead: 'bg-blue-50 text-blue-700',
-  contacted: 'bg-green-50 text-green-700',
-  discovery_call: 'bg-purple-50 text-purple-700',
-  proposal: 'bg-yellow-50 text-yellow-700',
-  won: 'bg-emerald-50 text-emerald-700',
-  lost: 'bg-gray-100 text-gray-500',
-}
+import { LeadsTable } from './components/LeadsTable'
 
 const TYPE_LABELS: Record<string, string> = {
   landing_page_quote: 'Landing Page',
@@ -16,6 +8,7 @@ const TYPE_LABELS: Record<string, string> = {
   multipage_website_quote: 'Multi-Page Site',
   package_inquiry: 'Package Inquiry',
 }
+
 
 type Contact = {
   id: string
@@ -167,7 +160,7 @@ export default async function AdminPage() {
           <div className="border border-gray-200 p-6">
             <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-gray-400 mb-5">By type</div>
             <div className="space-y-3">
-              {Object.entries(TYPE_LABELS).map(([key, label]) => {
+              {(Object.entries(TYPE_LABELS) as [string, string][]).map(([key, label]) => {
                 const count = stats.by_type[key] ?? 0
                 const pct = (count / maxType) * 100
                 return (
@@ -216,46 +209,7 @@ export default async function AdminPage() {
             <h2 className="text-lg font-bold tracking-tight">All leads</h2>
             <a href="/" target="_blank" className="text-xs text-[#0070F3] hover:underline">View public site →</a>
           </div>
-
-          {leads.length === 0 ? (
-            <div className="border border-gray-200 p-16 text-center">
-              <p className="text-sm text-gray-400">No leads yet.</p>
-            </div>
-          ) : (
-            <div className="border border-gray-200 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    {['Name', 'Email', 'Type', 'Status', 'Budget', 'How we met', 'Date'].map(h => (
-                      <th key={h} className="text-left text-[11px] font-bold tracking-[0.08em] uppercase text-gray-400 px-5 py-3">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                      <td className="px-5 py-3.5 font-semibold whitespace-nowrap">
-                        {lead.people?.name ?? '—'}
-                        {lead.people?.company && <div className="text-xs text-gray-400 font-normal">{lead.people.company}</div>}
-                      </td>
-                      <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{lead.people?.email ?? '—'}</td>
-                      <td className="px-5 py-3.5 whitespace-nowrap">{TYPE_LABELS[lead.type] ?? lead.type}</td>
-                      <td className="px-5 py-3.5 whitespace-nowrap">
-                        <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${STATUS_COLORS[lead.status] ?? 'bg-gray-100 text-gray-500'}`}>
-                          {lead.status.replace('_', ' ')}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{lead.people?.attributes?.budget_range ?? '—'}</td>
-                      <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{lead.people?.attributes?.how_we_met ?? '—'}</td>
-                      <td className="px-5 py-3.5 text-gray-400 whitespace-nowrap text-xs">
-                        {new Date(lead.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <LeadsTable leads={leads} />
         </div>
 
       </main>
