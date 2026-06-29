@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 
 const STATUS_COLORS: Record<string, string> = {
   new_lead: 'bg-blue-50 text-blue-700',
@@ -229,7 +230,9 @@ export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
               {paginated.map((lead) => (
                 <tr key={lead.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3.5 font-semibold whitespace-nowrap">
-                    {lead.people?.name ?? '—'}
+                    <Link href={`/admin/leads/${lead.id}`} className="hover:text-[#0070F3] transition-colors">
+                      {lead.people?.name ?? '—'}
+                    </Link>
                     {lead.people?.company && <div className="text-xs text-gray-400 font-normal">{lead.people.company}</div>}
                   </td>
                   <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{lead.people?.email ?? '—'}</td>
