@@ -160,7 +160,8 @@ export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
         l.people?.company?.toLowerCase().includes(q)
       )
     }
-    if (statusFilter) result = result.filter(l => l.status === statusFilter)
+    if (statusFilter === 'overdue') result = result.filter(l => isOverdue(l))
+    else if (statusFilter) result = result.filter(l => l.status === statusFilter)
     if (typeFilter) result = result.filter(l => l.type === typeFilter)
     result = [...result].sort((a, b) => {
       let av: string, bv: string
@@ -206,6 +207,7 @@ export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
           className="text-sm border border-gray-200 rounded px-3 py-2 outline-none focus:border-[#0070F3] bg-white"
         >
           <option value="">All statuses</option>
+          <option value="overdue">Overdue</option>
           {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
         </select>
         <select
