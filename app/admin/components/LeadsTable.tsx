@@ -55,6 +55,19 @@ type SortDir = 'asc' | 'desc'
 
 const PER_PAGE_OPTIONS = [5, 10, 20]
 
+function isOverdue(lead: Lead): boolean {
+  if (lead.status !== 'new_lead') return false
+  const created = new Date(lead.created_at)
+  const deadline = new Date(created)
+  let added = 0
+  while (added < 2) {
+    deadline.setDate(deadline.getDate() + 1)
+    const dow = deadline.getDay()
+    if (dow !== 0 && dow !== 6) added++
+  }
+  return deadline < new Date()
+}
+
 export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
   const [leads, setLeads] = useState<Lead[]>(initialLeads)
   const [search, setSearch] = useState('')
@@ -227,12 +240,19 @@ export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
               </tr>
             </thead>
             <tbody>
-              {paginated.map((lead) => (
-                <tr key={lead.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+              {paginated.map((lead) => {
+                const overdue = isOverdue(lead)
+                return (
+                <tr key={lead.id} className={`border-b border-gray-100 transition-colors ${overdue ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50'}`}>
                   <td className="px-5 py-3.5 font-semibold whitespace-nowrap">
-                    <Link href={`/admin/leads/${lead.id}`} className="hover:text-[#0070F3] transition-colors">
-                      {lead.people?.name ?? '—'}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/admin/leads/${lead.id}`} className="hover:text-[#0070F3] transition-colors">
+                        {lead.people?.name ?? '—'}
+                      </Link>
+                      {overdue && (
+                        <span className="text-[10px] font-bold bg-red-500 text-white px-1.5 py-0.5 rounded leading-none">overdue</span>
+                      )}
+                    </div>
                     {lead.people?.company && <div className="text-xs text-gray-400 font-normal">{lead.people.company}</div>}
                   </td>
                   <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{lead.people?.email ?? '—'}</td>
@@ -278,7 +298,7 @@ export function LeadsTable({ leads: initialLeads }: { leads: Lead[] }) {
                     )}
                   </td>
                 </tr>
-              ))}
+                )})}
             </tbody>
           </table>
         </div>
